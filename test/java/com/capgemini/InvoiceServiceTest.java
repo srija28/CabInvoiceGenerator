@@ -38,4 +38,15 @@ CabInvoiceService invoiceGenerator;
 		InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
 		Assert.assertEquals(expectedSummary, summary);
 	}
+	
+	@Test
+	public void givenUserIdReturnInvoiceSummary(){
+		String userId = "shreya";
+		RideRepository rideRepository = new RideRepository();
+		Ride[] rides = {new Ride(2.0, 5),
+		        new Ride(0.1, 1)};
+         rideRepository.addUserRide(userId, rides);   
+        Ride[] userRides = rideRepository.getUserRides(userId);
+        Assert.assertEquals(rides[1], userRides[1]);
+	}
 }
