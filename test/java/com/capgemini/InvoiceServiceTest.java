@@ -31,10 +31,11 @@ CabInvoiceService invoiceGenerator;
 	
 	@Test
 	public void givenMultipleRideReturnInvoiceSummary() {
-		Ride[] rides = {new Ride(2.0, 5),
-				        new Ride(0.1, 1)
+		Invoice invoice = new Invoice();
+		Ride[] rides = {new Ride(2.0, 5, Ride.RideType.NORMAL),
+				        new Ride(0.1, 1, Ride.RideType.NORMAL)
 		                };
-		InvoiceSummary summary = invoiceGenerator.calculateFare(rides);
+		InvoiceSummary summary = invoice.calculateFare(rides);
 		InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
 		Assert.assertEquals(expectedSummary, summary);
 	}
@@ -43,10 +44,21 @@ CabInvoiceService invoiceGenerator;
 	public void givenUserIdReturnInvoiceSummary(){
 		String userId = "shreya";
 		RideRepository rideRepository = new RideRepository();
-		Ride[] rides = {new Ride(2.0, 5),
-		        new Ride(0.1, 1)};
+		Ride[] rides = {new Ride(2.0, 5, Ride.RideType.NORMAL),
+		        new Ride(0.1, 1, Ride.RideType.PREMIUM)};
          rideRepository.addUserRide(userId, rides);   
         Ride[] userRides = rideRepository.getUserRides(userId);
         Assert.assertEquals(rides[1], userRides[1]);
+	}
+	
+	@Test
+	public void givenMultipleTypeRideReturnInvoiceSummary() {
+		Invoice invoice = new Invoice();
+		Ride[] rides = {new Ride(2.0, 5, Ride.RideType.PREMIUM),
+				        new Ride(0.1, 1, Ride.RideType.NORMAL)
+		                };
+		InvoiceSummary summary = invoice.calculateFare(rides);
+		InvoiceSummary expectedSummary = new InvoiceSummary(2, 45.0);
+		Assert.assertEquals(expectedSummary, summary);
 	}
 }
