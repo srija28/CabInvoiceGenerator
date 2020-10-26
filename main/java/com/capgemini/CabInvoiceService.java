@@ -1,4 +1,5 @@
 package com.capgemini;
+import com.capgemini.*;
 
 public class CabInvoiceService {
 	public static final double MIN_COST_PER_KM = 10.0;
@@ -8,6 +9,14 @@ public class CabInvoiceService {
     public double calculateFare(double distance, int time) {
 		double totalFare = distance * MIN_COST_PER_KM + time * COST_PER_TIME;
 	 return Math.max(totalFare, MIN_FARE);
+	}
+    
+    public double calculateFare(Ride[] rides) {
+		double totalFare = 0.0;
+		for(Ride ride : rides) {
+			totalFare += this.calculateFare(ride.distnce, ride.time);
+		}
+		return totalFare;
 	}
 	
 	
